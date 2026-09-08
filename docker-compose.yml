@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: resources/docker/Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.1}
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    container_name: ${PROJECT_PREFIX:-code-quality}-${PHP_VERSION:-8.1}
+    hostname: ${PROJECT_PREFIX:-code-quality}-${PHP_VERSION:-8.1}
+    working_dir: /srv
+    volumes:
+      - .:/srv
