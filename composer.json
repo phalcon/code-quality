@@ -1,0 +1,60 @@
+{
+    "name": "phalcon/code-quality",
+    "description": "Shared code quality configuration for the Phalcon Framework projects",
+    "keywords": [
+        "php",
+        "phalcon",
+        "code-quality",
+        "coding-standards",
+        "php-cs-fixer"
+    ],
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=8.1 <9.0",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+    "require-dev": {
+        "pds/composer-script-names": "^1.0",
+        "pds/skeleton": "^1.0",
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phalcon\\CodeQuality\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Phalcon\\CodeQuality\\Tests\\Unit\\": "tests/unit/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "8.1.99"
+        },
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "cs-check": [
+            "php-cs-fixer fix --config=resources/php-cs-fixer.php --dry-run --diff",
+            "phpcs --standard=resources/phpcs.xml"
+        ],
+        "cs-fix": [
+            "php-cs-fixer fix --config=resources/php-cs-fixer.php",
+            "phpcbf --standard=resources/phpcs.xml"
+        ],
+        "test": "phpunit -c resources/phpunit.xml.dist"
+    },
+    "type": "phpcodesniffer-standard"
+}
