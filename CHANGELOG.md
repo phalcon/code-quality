@@ -4,10 +4,6 @@ All notable changes are documented here. The format is based on [Keep a Changelo
 
 ## [1.0.0](https://github.com/phalcon/code-quality/releases/tag/v1.0.0) (2026-09-08)
 
-Introduction of the package. The code quality rules for the Phalcon projects
-live here now. A project sets only its own paths, its cache file and its display
-preferences.
-
 ### Added
 
 - `Phalcon\CodeQuality\PhpCsFixer\Rules`, the shared php-cs-fixer rule set. It starts with the `@PSR12` set, and the Phalcon rules after it replace three of the values of that set.
