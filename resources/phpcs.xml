@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="Phalcon Code Quality">
+    <description>
+        The rules come from the shared Phalcon standard in resources/Phalcon.
+        This file sets only the paths and the local preferences.
+    </description>
+
+    <arg name="colors"/>
+    <arg value="ps"/>
+
+    <rule ref="Phalcon"/>
+
+    <file>../src</file>
+    <file>../tests/unit</file>
+</ruleset>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="Phalcon">
+    <description>Phalcon Coding Standards</description>
+
+    <!--
+        Rules only. A project sets its own paths and its own display arguments
+        such as colors, p and s. Display arguments here would go into every
+        project, and the progress output corrupts a JSON report.
+    -->
+
+    <!-- Phalcon has methods with an underscore prefix. -->
+    <rule ref="PSR12">
+        <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
+    </rule>
+</ruleset>
