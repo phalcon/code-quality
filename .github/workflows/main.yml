@@ -1,0 +1,92 @@
+# This file is part of Phalcon.
+#
+# (c) Phalcon Team <team@phalcon.io>
+#
+# For the full copyright and license information, please view
+# the LICENSE file that was distributed with this source code.
+
+name: "Code Quality CI"
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+  workflow_dispatch:
+
+permissions: { }
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
+jobs:
+  quality:
+    name: "Code quality (php-cs-fixer + phpcs)"
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring
+          tools: composer:v2
+          coverage: none
+
+      - name: "Validate composer"
+        run: composer validate --no-check-all --no-check-publish
+
+      - name: "Install dependencies"
+        uses: ramsey/composer-install@26d8a556604053a9612623447203a691f406fbe6 # v4
+        with:
+          composer-options: "--prefer-dist"
+
+      # Runs php-cs-fixer as a dry run and phpcs with the shared Phalcon
+      # standard. The package must satisfy the rules that it publishes.
+      - name: "Code style"
+        run: composer cs-check
+
+  tests:
+    name: "Tests / PHP ${{ matrix.php }}"
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    needs:
+      - quality
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1', '8.2', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring
+          tools: composer:v2
+          coverage: none
+
+      # The composer plugin that registers the Phalcon standard with phpcs runs
+      # here. The tests call the standard by name, so a plugin that does not run
+      # makes them fail.
+      - name: "Install dependencies"
+        uses: ramsey/composer-install@26d8a556604053a9612623447203a691f406fbe6 # v4
+        with:
+          composer-options: "--prefer-dist"
+
+      - name: "Run unit tests"
+        run: composer test
