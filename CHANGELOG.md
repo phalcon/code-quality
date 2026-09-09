@@ -2,6 +2,12 @@
 
 All notable changes are documented here. The format is based on [Keep a Changelog][keep_a_changelog] and this project adheres to [Semantic Versioning][semantic_versioning].
 
+## [1.0.1](https://github.com/phalcon/code-quality/releases/tag/v1.0.1) (2026-09-08)
+
+### Fixed
+
+- `Phalcon\CodeQuality\PhpCsFixer\ConfigFactory::create()` now excludes every `_output` directory below the given paths. A project that scans a `tests` directory picked up the tooling caches in `tests/_output` (the PHPStan `tmpDir`), and php-cs-fixer reported those generated files.
+
 ## [1.0.0](https://github.com/phalcon/code-quality/releases/tag/v1.0.0) (2026-09-08)
 
 ### Added
