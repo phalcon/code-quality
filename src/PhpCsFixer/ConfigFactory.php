@@ -50,6 +50,7 @@ final class ConfigFactory
             ->setUsingCache(true)
             ->setCacheFile($cacheFile)
             ->setRules(Rules::get())
-            ->setFinder(Finder::create()->in($paths));
+            // Tooling caches (PHPStan tmpDir, PHPUnit) live in tests/_output.
+            ->setFinder(Finder::create()->in($paths)->exclude('_output'));
     }
 }
